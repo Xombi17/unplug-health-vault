@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Mail, Lock, User, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +9,21 @@ import AnimatedSection from '@/components/ui/AnimatedSection';
 import { toast } from '@/hooks/use-toast';
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: '',
+    email: '',
+    password: ''
+  });
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
   
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,6 +36,24 @@ const SignUp = () => {
         title: "Account created",
         description: "Welcome to HealthVault! Your account has been created successfully.",
       });
+      // Navigate to dashboard after successful signup
+      navigate('/dashboard');
+    }, 1500);
+  };
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setIsLoading(false);
+      toast({
+        title: "Welcome back",
+        description: "You have successfully logged in to HealthVault.",
+      });
+      // Navigate to dashboard after successful login
+      navigate('/dashboard');
     }, 1500);
   };
 
@@ -75,6 +107,9 @@ const SignUp = () => {
                       <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input 
                         type="text" 
+                        name="fullName"
+                        value={formData.fullName}
+                        onChange={handleInputChange}
                         placeholder="Full Name" 
                         className="pl-10 bg-background/50 border-white/10 focus-visible:ring-health-500"
                         required
@@ -87,6 +122,9 @@ const SignUp = () => {
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input 
                         type="email" 
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
                         placeholder="Email" 
                         className="pl-10 bg-background/50 border-white/10 focus-visible:ring-health-500"
                         required
@@ -99,6 +137,9 @@ const SignUp = () => {
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input 
                         type="password" 
+                        name="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
                         placeholder="Password" 
                         className="pl-10 bg-background/50 border-white/10 focus-visible:ring-health-500"
                         required
@@ -118,12 +159,15 @@ const SignUp = () => {
               </TabsContent>
               
               <TabsContent value="login">
-                <form onSubmit={handleSignUp} className="space-y-4">
+                <form onSubmit={handleLogin} className="space-y-4">
                   <div className="space-y-2">
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input 
                         type="email" 
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
                         placeholder="Email" 
                         className="pl-10 bg-background/50 border-white/10 focus-visible:ring-health-500"
                         required
@@ -136,6 +180,9 @@ const SignUp = () => {
                       <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                       <Input 
                         type="password" 
+                        name="password"
+                        value={formData.password}
+                        onChange={handleInputChange}
                         placeholder="Password" 
                         className="pl-10 bg-background/50 border-white/10 focus-visible:ring-health-500"
                         required
