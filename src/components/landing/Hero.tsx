@@ -1,7 +1,7 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Shield, FileMedical, Heart } from 'lucide-react';
+import { ArrowRight, Shield, FileText, Heart } from 'lucide-react';
 import ParallaxElement from '@/components/ui/ParallaxElement';
 
 const Hero = () => {
@@ -99,7 +99,7 @@ const Hero = () => {
                 data-speed="0.05"
               >
                 <div className="flex items-center gap-3">
-                  <FileMedical className="text-health-600" size={24} />
+                  <FileText className="text-health-600" size={24} />
                   <div>
                     <h4 className="font-medium text-sm">Records</h4>
                     <p className="text-xs text-muted-foreground">All in one place</p>
