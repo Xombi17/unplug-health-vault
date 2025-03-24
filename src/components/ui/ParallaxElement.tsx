@@ -7,6 +7,8 @@ interface ParallaxElementProps extends React.HTMLAttributes<HTMLDivElement> {
   direction?: 'horizontal' | 'vertical';
   children: React.ReactNode;
   className?: string;
+  offset?: number;
+  rotateEffect?: boolean;
 }
 
 const ParallaxElement = ({
@@ -14,10 +16,13 @@ const ParallaxElement = ({
   direction = 'vertical',
   children,
   className,
+  offset = 0,
+  rotateEffect = false,
   ...props
 }: ParallaxElementProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState(0);
+  const [transformValue, setTransformValue] = useState({ translateY: 0, translateX: 0, rotate: 0 });
+  const [isInView, setIsInView] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,8 +34,17 @@ const ParallaxElement = ({
       const elementVisibility = scrollY + window.innerHeight - elementTop;
       
       if (elementVisibility > 0 && scrollY < elementTop + rect.height) {
-        const newOffset = (scrollY - elementTop) * speed;
-        setOffset(newOffset);
+        setIsInView(true);
+        const translateValue = (scrollY - elementTop + offset) * speed;
+        const rotateValue = rotateEffect ? translateValue * 0.1 : 0;
+        
+        setTransformValue({
+          translateY: direction === 'vertical' ? translateValue : 0,
+          translateX: direction === 'horizontal' ? translateValue : 0,
+          rotate: rotateValue
+        });
+      } else {
+        setIsInView(false);
       }
     };
 
@@ -38,17 +52,16 @@ const ParallaxElement = ({
     handleScroll(); // Initial position
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [speed]);
+  }, [speed, direction, offset, rotateEffect]);
 
   return (
     <div
       ref={ref}
       style={{
-        transform: direction === 'vertical' 
-          ? `translateY(${offset}px)` 
-          : `translateX(${offset}px)`,
-        transition: 'transform 0.1s cubic-bezier(0.33, 1, 0.68, 1)',
-        willChange: 'transform'
+        transform: `translateY(${transformValue.translateY}px) translateX(${transformValue.translateX}px) rotate(${transformValue.rotate}deg)`,
+        opacity: isInView ? 1 : 0,
+        transition: 'transform 0.1s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.5s ease-out',
+        willChange: 'transform, opacity'
       }}
       className={cn('relative', className)}
       {...props}

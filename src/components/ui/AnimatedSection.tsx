@@ -6,16 +6,18 @@ interface AnimatedSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   className?: string;
   threshold?: number;
-  animation?: 'fade-in' | 'scale-in' | 'fade-up' | 'none';
+  animation?: 'fade-in' | 'scale-in' | 'fade-up' | 'slide-up' | 'none';
   delay?: number;
+  duration?: number;
 }
 
 const AnimatedSection = ({
   children,
   className,
   threshold = 0.1,
-  animation = 'fade-in',
+  animation = 'fade-up',
   delay = 0,
+  duration = 700,
   ...props
 }: AnimatedSectionProps) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -41,27 +43,47 @@ const AnimatedSection = ({
     };
   }, [threshold]);
 
-  const getAnimationClass = () => {
-    if (animation === 'none' || !isVisible) return '';
+  const getAnimationStyles = () => {
+    if (animation === 'none' || isVisible) return {};
     
-    if (animation === 'fade-up') {
-      return isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10';
+    if (animation === 'fade-up' || animation === 'slide-up') {
+      return {
+        opacity: 0,
+        transform: 'translateY(40px)'
+      };
     }
     
-    return isVisible ? `animate-${animation}` : 'opacity-0';
+    if (animation === 'fade-in') {
+      return {
+        opacity: 0
+      };
+    }
+    
+    if (animation === 'scale-in') {
+      return {
+        opacity: 0,
+        transform: 'scale(0.95)'
+      };
+    }
+    
+    return {};
   };
 
   return (
     <div
       ref={ref}
       className={cn(
-        'transition-all duration-700 ease-out',
-        getAnimationClass(),
+        'transition-all will-change-[opacity,transform]',
         className
       )}
       style={{ 
-        transitionDelay: `${delay}ms`, 
-        willChange: 'opacity, transform'
+        ...getAnimationStyles(),
+        transitionProperty: 'opacity, transform',
+        transitionDuration: `${duration}ms`,
+        transitionDelay: `${delay}ms`,
+        transitionTimingFunction: 'cubic-bezier(0.33, 1, 0.68, 1)',
+        opacity: isVisible ? 1 : getAnimationStyles().opacity,
+        transform: isVisible ? 'translateY(0) scale(1)' : getAnimationStyles().transform
       }}
       {...props}
     >
