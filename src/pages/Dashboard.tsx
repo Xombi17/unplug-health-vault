@@ -5,9 +5,19 @@ import DashboardHeader from '@/components/dashboard/DashboardHeader';
 import OverviewTab from '@/components/dashboard/OverviewTab';
 import HealthStatsTab from '@/components/dashboard/HealthStatsTab';
 import AnimatedBackground from '@/components/dashboard/AnimatedBackground';
+import AppointmentBooking from '@/components/dashboard/AppointmentBooking';
+import TelemedicineConsult from '@/components/dashboard/TelemedicineConsult';
+import MedicinePurchase from '@/components/dashboard/MedicinePurchase';
+import VaccinesTab from '@/components/dashboard/VaccinesTab';
+import SymptomChecker from '@/components/dashboard/SymptomChecker';
+import DrugInteractionChecker from '@/components/dashboard/DrugInteractionChecker';
+import WearableIntegration from '@/components/dashboard/WearableIntegration';
+import EmergencyServices from '@/components/dashboard/EmergencyServices';
+import HealthCommunity from '@/components/dashboard/HealthCommunity';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [showAppointments, setShowAppointments] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
   // Mock user data
@@ -81,6 +91,24 @@ const Dashboard = () => {
             healthTrendData={healthTrendData}
           />
         );
+      case 'appointments':
+        return <AppointmentBooking />;
+      case 'telemedicine':
+        return <TelemedicineConsult />;
+      case 'pharmacy':
+        return <MedicinePurchase />;
+      case 'vaccines':
+        return <VaccinesTab />;
+      case 'symptom-checker':
+        return <SymptomChecker />;
+      case 'drug-interactions':
+        return <DrugInteractionChecker />;
+      case 'wearables':
+        return <WearableIntegration />;
+      case 'emergency':
+        return <EmergencyServices />;
+      case 'community':
+        return <HealthCommunity />;
       default:
         return (
           <div className="flex items-center justify-center h-64">

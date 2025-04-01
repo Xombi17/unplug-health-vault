@@ -44,7 +44,7 @@ const AnimatedSection = ({
   }, [threshold]);
 
   const getAnimationStyles = () => {
-    if (animation === 'none' || isVisible) return {};
+    if (animation === 'none' || isVisible) return { opacity: undefined, transform: undefined };
     
     if (animation === 'fade-up' || animation === 'slide-up') {
       return {
@@ -55,7 +55,8 @@ const AnimatedSection = ({
     
     if (animation === 'fade-in') {
       return {
-        opacity: 0
+        opacity: 0,
+        transform: undefined
       };
     }
     
@@ -66,7 +67,7 @@ const AnimatedSection = ({
       };
     }
     
-    return {};
+    return { opacity: undefined, transform: undefined };
   };
 
   return (

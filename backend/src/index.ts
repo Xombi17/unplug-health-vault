@@ -1,8 +1,8 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import vaccineRoutes from './routes/vaccineRoutes';
+import { connectDB } from './config/database';
 
 // Load environment variables
 dotenv.config();
@@ -17,17 +17,8 @@ app.use(express.json());
 // Routes
 app.use('/api/vaccines', vaccineRoutes);
 
-// MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/healthvault';
-
-mongoose.connect(MONGODB_URI)
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((error) => {
-    console.error('MongoDB connection error:', error);
-    process.exit(1);
-  });
+// Connect to MongoDB
+connectDB();
 
 // Error handling middleware
 app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {

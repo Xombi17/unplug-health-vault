@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+const API_BASE_URL = 'http://localhost:8080/api';
+
 interface VaccineData {
   name: string;
   date: string;
@@ -21,8 +23,7 @@ export const vaccineService = {
     formData.append('certificate', file);
 
     try {
-      // TODO: Replace with actual API endpoint
-      const response = await axios.post('/api/vaccines/process-certificate', formData, {
+      const response = await axios.post(`${API_BASE_URL}/vaccines/process-certificate`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -37,8 +38,7 @@ export const vaccineService = {
 
   async getVaccineRecommendations(): Promise<VaccineRecommendation[]> {
     try {
-      // TODO: Replace with actual API endpoint
-      const response = await axios.get('/api/vaccines/recommendations');
+      const response = await axios.get(`${API_BASE_URL}/vaccines/recommendations`);
       return response.data;
     } catch (error) {
       console.error('Error fetching vaccine recommendations:', error);
@@ -48,8 +48,7 @@ export const vaccineService = {
 
   async saveVaccineRecord(vaccineData: VaccineData): Promise<void> {
     try {
-      // TODO: Replace with actual API endpoint
-      await axios.post('/api/vaccines/records', vaccineData);
+      await axios.post(`${API_BASE_URL}/vaccines/records`, vaccineData);
     } catch (error) {
       console.error('Error saving vaccine record:', error);
       throw new Error('Failed to save vaccine record');
@@ -58,8 +57,7 @@ export const vaccineService = {
 
   async getVaccineHistory(): Promise<VaccineData[]> {
     try {
-      // TODO: Replace with actual API endpoint
-      const response = await axios.get('/api/vaccines/history');
+      const response = await axios.get(`${API_BASE_URL}/vaccines/history`);
       return response.data;
     } catch (error) {
       console.error('Error fetching vaccine history:', error);
@@ -71,9 +69,10 @@ export const vaccineService = {
   determineVaccineStatus(vaccine: VaccineData): 'completed' | 'pending' | 'overdue' {
     const today = new Date();
     const vaccineDate = new Date(vaccine.date);
-    const nextDueDate = vaccine.nextDueDate ? new Date(vaccine.nextDueDate) : null;
-
-    if (!nextDueDate) return 'completed';
+    
+    if (!vaccine.nextDueDate) return 'completed';
+    
+    const nextDueDate = new Date(vaccine.nextDueDate);
 
     if (nextDueDate < today) {
       return 'overdue';
@@ -81,4 +80,4 @@ export const vaccineService = {
 
     return 'pending';
   },
-}; 
+};

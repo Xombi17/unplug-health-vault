@@ -10,7 +10,6 @@ import Footer from '@/components/landing/Footer';
 
 const Index = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const cursorRef = useRef<HTMLDivElement>(null);
   const cursorDotRef = useRef<HTMLDivElement>(null);
 
@@ -26,7 +25,12 @@ const Index = () => {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setCursorPosition({ x: e.clientX, y: e.clientY });
+      if (cursorRef.current && cursorDotRef.current) {
+        cursorRef.current.style.left = `${e.clientX}px`;
+        cursorRef.current.style.top = `${e.clientY}px`;
+        cursorDotRef.current.style.left = `${e.clientX}px`;
+        cursorDotRef.current.style.top = `${e.clientY}px`;
+      }
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -80,16 +84,16 @@ const Index = () => {
         ref={cursorRef}
         className="fixed w-10 h-10 rounded-full border-2 border-health-500 pointer-events-none z-50 -translate-x-1/2 -translate-y-1/2 mix-blend-difference transition-transform duration-300 ease-out hidden md:block"
         style={{ 
-          left: `${cursorPosition.x}px`, 
-          top: `${cursorPosition.y}px` 
+          left: '0px', 
+          top: '0px' 
         }}
       ></div>
       <div
         ref={cursorDotRef}
         className="fixed w-2 h-2 rounded-full bg-health-500 pointer-events-none z-50 -translate-x-1/2 -translate-y-1/2 mix-blend-difference transition-opacity duration-300 ease-out hidden md:block"
         style={{ 
-          left: `${cursorPosition.x}px`, 
-          top: `${cursorPosition.y}px` 
+          left: '0px', 
+          top: '0px' 
         }}
       ></div>
     </div>

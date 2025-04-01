@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Shield, User, Calendar, FileText, Activity, List, Settings, LogOut } from 'lucide-react';
+import { Shield, User, Calendar, FileText, Activity, List, Settings, LogOut, Bell, Video, Pill, Brain, AlertCircle, Watch, MessageSquare } from 'lucide-react';
 import SidebarItem from './SidebarItem';
 import GlassMorphismCard from '@/components/ui/GlassMorphismCard';
 
@@ -51,10 +51,64 @@ const Sidebar = ({ activeTab, setActiveTab, userData }: SidebarProps) => {
               onClick={() => setActiveTab('health-stats')} 
             />
             <SidebarItem 
+              icon={<Bell />} 
+              text="Notifications" 
+              active={activeTab === 'notifications'} 
+              onClick={() => setActiveTab('notifications')} 
+            />
+            <SidebarItem 
+              icon={<Calendar />} 
+              text="Appointments" 
+              active={activeTab === 'appointments'} 
+              onClick={() => setActiveTab('appointments')} 
+            />
+            <SidebarItem 
+              icon={<Video />} 
+              text="Telemedicine" 
+              active={activeTab === 'telemedicine'} 
+              onClick={() => setActiveTab('telemedicine')} 
+            />
+            <SidebarItem 
+              icon={<Pill />} 
+              text="Pharmacy" 
+              active={activeTab === 'pharmacy'} 
+              onClick={() => setActiveTab('pharmacy')} 
+            />
+            <SidebarItem 
               icon={<List />} 
               text="Vaccines" 
               active={activeTab === 'vaccines'} 
               onClick={() => setActiveTab('vaccines')} 
+            />
+            <SidebarItem 
+              icon={<Brain />} 
+              text="Symptom Checker" 
+              active={activeTab === 'symptom-checker'} 
+              onClick={() => setActiveTab('symptom-checker')} 
+            />
+            <SidebarItem 
+              icon={<Pill />} 
+              text="Drug Interactions" 
+              active={activeTab === 'drug-interactions'} 
+              onClick={() => setActiveTab('drug-interactions')} 
+            />
+            <SidebarItem 
+              icon={<Watch />} 
+              text="Wearables" 
+              active={activeTab === 'wearables'} 
+              onClick={() => setActiveTab('wearables')} 
+            />
+            <SidebarItem 
+              icon={<AlertCircle />} 
+              text="Emergency" 
+              active={activeTab === 'emergency'} 
+              onClick={() => setActiveTab('emergency')} 
+            />
+            <SidebarItem 
+              icon={<MessageSquare />} 
+              text="Community" 
+              active={activeTab === 'community'} 
+              onClick={() => setActiveTab('community')} 
             />
           </div>
           
